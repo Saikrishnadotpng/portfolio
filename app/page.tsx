@@ -36,8 +36,9 @@ export default function Home() {
   const light2X = useTransform(mouseX, (val: number) => -val / 40)
   const light2Y = useTransform(mouseY, (val: number) => -val / 40)
 
-  // Move the template hook to the top level
-  const backgroundGlow = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(168, 85, 247, 0.15), transparent 80%)`
+  // Use transforms for better performance instead of recalculating gradient strings
+  const glowX = useTransform(mouseX, (val: number) => val - 300)
+  const glowY = useTransform(mouseY, (val: number) => val - 300)
 
   function handleMouseMove(e: React.MouseEvent) {
     mouseX.set(e.clientX)
@@ -49,9 +50,11 @@ export default function Home() {
 
       {/* Cursor Magic Glow Effect */}
       <motion.div
-        className="pointer-events-none fixed inset-0 z-30 transition duration-300"
+        className="pointer-events-none fixed top-0 left-0 z-30 w-[600px] h-[600px] rounded-full will-change-transform transition-opacity duration-300"
         style={{
-          background: backgroundGlow,
+          x: glowX,
+          y: glowY,
+          background: "radial-gradient(circle, rgba(168, 85, 247, 0.15), transparent 80%)",
         }}
       />
 
@@ -74,8 +77,8 @@ export default function Home() {
 
         {/* Cinematic Background Lights */}
         <div className="absolute inset-0 -z-10">
-          <motion.div style={{ x: light1X, y: light1Y }} className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/30 rounded-full blur-3xl"></motion.div>
-          <motion.div style={{ x: light2X, y: light2Y }} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-3xl"></motion.div>
+          <motion.div style={{ x: light1X, y: light1Y }} className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
+          <motion.div style={{ x: light2X, y: light2Y }} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
         </div>
 
           <div className="relative text-center px-6">
@@ -177,7 +180,7 @@ export default function Home() {
             Let’s create something meaningful together.
           </p>
         </div>
-      </motion.section>
+      </motion.section>                                                                                                                               
 
     </main>
   )
