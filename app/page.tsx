@@ -121,7 +121,7 @@ export default function Home() {
             {/* The user needs to provide their photo. Let's use a dynamic placeholder or image component here */}
             {/* Replace src with your actual photo path, like src="/your-photo.jpg" */}
             <img 
-              src="/profile.png" 
+              src="/profile.png.jpg" 
               alt="My Portrait" 
               className="w-full h-full object-cover" 
             />
