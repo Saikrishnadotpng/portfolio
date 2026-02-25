@@ -45,7 +45,7 @@ export default function Home() {
   }
 
     return (
-    <main className={`bg-black text-white overflow-x-hidden ${isGlitching ? 'glitch-active' : ''}`} onMouseMove={handleMouseMove}>
+    <main className={`bg-black text-white overflow-x-hidden flight-cursor ${isGlitching ? 'glitch-active' : ''}`} onMouseMove={handleMouseMove}>
 
       {/* Cursor Magic Glow Effect */}
       <motion.div
