@@ -1,8 +1,30 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from "framer-motion"
 
 export default function Home() {
+  const [isGlitching, setIsGlitching] = useState(false)
+
+  useEffect(() => {
+    // Disable automatic browser scroll restoration
+    if (window.history.scrollRestoration) {
+      window.history.scrollRestoration = 'manual'
+    }
+    
+    // Jump to the top of the page on load
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    
+    // Trigger the glitch effect
+    setIsGlitching(true)
+    
+    const timer = setTimeout(() => {
+      setIsGlitching(false)
+    }, 500) // matches glitch animation duration
+
+    return () => clearTimeout(timer)
+  }, [])
+
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -23,7 +45,7 @@ export default function Home() {
   }
 
     return (
-    <main className="bg-black text-white overflow-x-hidden" onMouseMove={handleMouseMove}>
+    <main className={`bg-black text-white overflow-x-hidden ${isGlitching ? 'glitch-active' : ''}`} onMouseMove={handleMouseMove}>
 
       {/* Cursor Magic Glow Effect */}
       <motion.div
