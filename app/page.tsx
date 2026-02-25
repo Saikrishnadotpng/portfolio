@@ -31,6 +31,10 @@ export default function Home() {
   const { scrollY } = useScroll()
   const headingY = useTransform(scrollY, [0, 500], [0, -100])
 
+  // 3D Photo Scroll Animations
+  const imageScale = useTransform(scrollY, [0, 800], [0.5, 1])
+  const imageRotateY = useTransform(scrollY, [0, 800], [0, 360])
+
   const light1X = useTransform(mouseX, (val: number) => val / 40)
   const light1Y = useTransform(mouseY, (val: number) => val / 40)
   const light2X = useTransform(mouseX, (val: number) => -val / 40)
@@ -73,36 +77,59 @@ export default function Home() {
 
 
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[150vh]" style={{ perspective: "1000px" }}>
+        
+        {/* Sticky wrapper locks the content in viewport while scrolling down */}
+        <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+          
+          {/* Cinematic Background Lights */}
+          <div className="absolute inset-0 -z-10">
+            <motion.div style={{ x: light1X, y: light1Y }} className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
+            <motion.div style={{ x: light2X, y: light2Y }} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
+          </div>
 
-        {/* Cinematic Background Lights */}
-        <div className="absolute inset-0 -z-10">
-          <motion.div style={{ x: light1X, y: light1Y }} className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
-          <motion.div style={{ x: light2X, y: light2Y }} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-3xl will-change-transform"></motion.div>
-        </div>
+          {/* Heading */}
+          <div className="relative text-center px-6 z-10 mb-8 md:mb-12 mt-10">
+            <motion.h1
+              style={{y: headingY }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="text-6xl md:text-8xl font-extrabold tracking-tight bg-linear-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+            >
+              B J Sai Krishna
+            </motion.h1>
 
-          <div className="relative text-center px-6">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="mt-6 text-gray-400 text-lg md:text-2xl"
+            >
+              Filmmaker • Developer • Creator
+            </motion.p>
+          </div>
 
-          <motion.h1
-            style={{y: headingY }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-6xl md:text-8xl font-extrabold tracking-tight bg-linear-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+          {/* 3D Revolving Photo */}
+          <motion.div
+            style={{
+              scale: imageScale,
+              rotateY: imageRotateY,
+            }}
+            className="relative z-20 w-48 h-64 md:w-80 md:h-[28rem] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.4)] border border-white/20 will-change-transform"
           >
-            B J Sai Krishna
-          </motion.h1>
+            {/* The user needs to provide their photo. Let's use a dynamic placeholder or image component here */}
+            {/* Replace src with your actual photo path, like src="/your-photo.jpg" */}
+            <img 
+              src="/profile.png" 
+              alt="My Portrait" 
+              className="w-full h-full object-cover" 
+            />
+            {/* Optional Overlay Glow */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-transparent pointer-events-none"></div>
+          </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="mt-6 text-gray-400 text-lg md:text-2xl"
-          >
-            Filmmaker • Developer • Creator
-          </motion.p>
-
-          <div className="mt-20 text-gray-500 text-sm animate-bounce">
+          <div className="absolute bottom-10 mt-20 text-gray-500 text-sm animate-bounce">
             ↓ Scroll
           </div>
 
