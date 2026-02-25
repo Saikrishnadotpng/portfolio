@@ -20,7 +20,7 @@ export default function Home() {
     
     const timer = setTimeout(() => {
       setIsGlitching(false)
-    }, 500) // matches glitch animation duration
+    }, 600) // matches glitch animation duration
 
     return () => clearTimeout(timer)
   }, [])
