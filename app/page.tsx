@@ -1,65 +1,162 @@
-import Image from "next/image";
+"use client"
+
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from "framer-motion"
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const { scrollY } = useScroll()
+  const headingY = useTransform(scrollY, [0, 500], [0, -100])
+
+  const light1X = useTransform(mouseX, (val: number) => val / 40)
+  const light1Y = useTransform(mouseY, (val: number) => val / 40)
+  const light2X = useTransform(mouseX, (val: number) => -val / 40)
+  const light2Y = useTransform(mouseY, (val: number) => -val / 40)
+
+  // Move the template hook to the top level
+  const backgroundGlow = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(168, 85, 247, 0.15), transparent 80%)`
+
+  function handleMouseMove(e: React.MouseEvent) {
+    mouseX.set(e.clientX)
+    mouseY.set(e.clientY)
+  }
+
+    return (
+    <main className="bg-black text-white overflow-x-hidden" onMouseMove={handleMouseMove}>
+
+      {/* Cursor Magic Glow Effect */}
+      <motion.div
+        className="pointer-events-none fixed inset-0 z-30 transition duration-300"
+        style={{
+          background: backgroundGlow,
+        }}
+      />
+
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-10 py-5 backdrop-blur-xl bg-black/40 border-b border-white/10 z-50">
+        <a href="#" className="font-semibold text-lg hover:text-white transition cursor-pointer">
+          B J Sai Krishna
+        </a>
+
+        <div className="space-x-8 text-sm text-gray-300">
+          <a href="#about" className="hover:text-white transition">About</a>
+          <a href="#projects" className="hover:text-white transition">Projects</a>
+          <a href="#contact" className="hover:text-white transition">Contact</a>
+        </div>
+      </nav>
+
+
+      {/* HERO SECTION */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+        {/* Cinematic Background Lights */}
+        <div className="absolute inset-0 -z-10">
+          <motion.div style={{ x: light1X, y: light1Y }} className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/30 rounded-full blur-3xl"></motion.div>
+          <motion.div style={{ x: light2X, y: light2Y }} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-3xl"></motion.div>
+        </div>
+
+          <div className="relative text-center px-6">
+
+          <motion.h1
+            style={{y: headingY }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-6xl md:text-8xl font-extrabold tracking-tight bg-linear-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+          >
+            B J Sai Krishna
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="mt-6 text-gray-400 text-lg md:text-2xl"
+          >
+            Filmmaker • Developer • Creator
+          </motion.p>
+
+          <div className="mt-20 text-gray-500 text-sm animate-bounce">
+            ↓ Scroll
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ABOUT SECTION */}
+      <motion.section
+        id="about"
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="min-h-screen flex items-center justify-center px-6"
+      >
+        <div className="max-w-3xl text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            About Me
+          </h2>
+          <p className="text-gray-400 leading-relaxed text-lg">
+            I build cinematic visuals and powerful digital experiences.
+            I blend storytelling, engineering, and design to create meaningful work.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </motion.section>
+
+
+      {/* PROJECTS SECTION */}
+      <motion.section
+        id="projects"
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="min-h-screen px-8 py-20"
+      >
+        <h2 className="text-4xl font-bold text-center mb-16">
+          Projects
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[1,2,3].map((item) => (
+            <motion.div
+              key={item}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 hover:border-purple-500/40 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition duration-500"
+            >
+              <h3 className="text-xl font-semibold mb-4">
+                Project {item}
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Cinematic storytelling meets technical precision.
+              </p>
+            </motion.div>
+          ))}
         </div>
-      </main>
-    </div>
-  );
+      </motion.section>
+
+
+      {/* CONTACT SECTION */}
+      <motion.section
+        id="contact"
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="min-h-screen flex items-center justify-center px-6"
+      >
+        <div className="text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Contact Me
+          </h2>
+          <p className="text-gray-400">
+            Let’s create something meaningful together.
+          </p>
+        </div>
+      </motion.section>
+
+    </main>
+  )
 }
