@@ -151,8 +151,11 @@ export default function Home() {
             About Me
           </h2>
           <p className="text-gray-400 leading-relaxed text-lg">
-            I build cinematic visuals and powerful digital experiences.
-            I blend storytelling, engineering, and design to create meaningful work.
+            I don’t just create projects. I build stories — sometimes with cameras, sometimes with code.
+            I’m B J Sai Krishna, a filmmaker at heart and an engineer by passion. I love capturing emotions through visuals and solving problems through logic.
+            From short films that explore human psychology to robotics projects that move with precision, I’m always experimenting at the edge of creativity and technology.
+            I’m currently exploring AI systems, embedded electronics, and cinematic storytelling — all while constantly learning, building, and refining my craft.
+            To me, innovation isn’t just about technology. It’s about impact. 
           </p>
         </div>
       </motion.section>
@@ -162,7 +165,7 @@ export default function Home() {
       <motion.section
         id="projects"
         initial={{ opacity: 0, y: 100 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}      
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
         className="min-h-screen px-8 py-20"
